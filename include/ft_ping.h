@@ -6,11 +6,16 @@
 /*   By: aabelque <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/08 15:41:59 by aabelque          #+#    #+#             */
-/*   Updated: 2021/10/08 15:43:34 by aabelque         ###   ########.fr       */
+/*   Updated: 2021/10/08 17:27:09 by zizou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_PING_H
 # define FT_PING_H
+
+#include <stdio.h>
+#include <stdlib.h>
+
+void	ft_usage(void);
 
 #endif

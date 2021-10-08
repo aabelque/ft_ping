@@ -1,21 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_ping.c                                          :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zizou </var/mail/zizou>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/08 17:11:55 by zizou             #+#    #+#             */
-/*   Updated: 2021/10/08 17:44:50 by zizou            ###   ########.fr       */
+/*   Created: 2021/10/08 17:21:32 by zizou             #+#    #+#             */
+/*   Updated: 2021/10/08 17:44:53 by zizou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ping.h"
 
-int		main(int ac, char **av) {
-	if (2 > ac || ac > 3)
-		ft_usage();
-	//TODO
-	//check arg for option
-	return (0);
+void	ft_usage(void) {
+	printf("Usage: ft_ping [-hv] [-h help] [-v verbose] destination\n");
+	exit(-1);
 }
+

@@ -6,7 +6,7 @@
 #    By: aabelque <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/03/04 13:38:41 by aabelque          #+#    #+#              #
-#    Updated: 2021/10/08 15:48:07 by aabelque         ###   ########.fr        #
+#    Updated: 2021/10/08 17:21:53 by zizou            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ DEBUG = -g3
 CFLAG = -Wall -Wextra -Werror -Wpadded
 
 SRC = ft_ping.c
+SRC += utils.c
 
 all: $(NAME)
 
