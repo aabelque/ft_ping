@@ -6,7 +6,7 @@
 #    By: aabelque <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/03/04 13:38:41 by aabelque          #+#    #+#              #
-#    Updated: 2021/10/12 15:57:14 by zizou            ###   ########.fr        #
+#    Updated: 2021/10/18 20:27:27 by zizou            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,10 @@ SRC = ft_ping.c
 SRC += utils.c
 SRC += libc.c
 SRC += parse_args.c
-SRC += init_socket.c
+SRC += init.c
+SRC += hostname.c
+SRC += send_ping.c
+SRC += recv_ping.c
 
 all: $(NAME)
 

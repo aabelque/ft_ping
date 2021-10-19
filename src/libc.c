@@ -6,74 +6,94 @@
 /*   By: zizou </var/mail/zizou>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/09 10:48:36 by zizou             #+#    #+#             */
-/*   Updated: 2021/10/12 20:48:36 by zizou            ###   ########.fr       */
+/*   Updated: 2021/10/19 02:14:57 by zizou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ping.h"
 
-int		ft_strcmp(const char *s1, const char *s2) {
-	while (*s1 == *s2) {
-		if (*s1 == '\0')
-			return (0);
-		s1++;
-		s2++;
-	}
-	return (*(unsigned char *)s1 - *(unsigned char *)s2);
+inline size_t ft_strlen(char *s)
+{
+		char *i = s;
+
+		while (*s)
+				s++;
+		return (s - i);
 }
 
-int				ft_isspace(char c) {
-	if (c == ' ' || c == '\t' || c == '\f' || c == '\r' || c == '\n'
-			|| c == '\v')
-		return (1);
-	return (0);
+inline void *ft_memcpy(void *dst, const void *src, size_t n)
+{
+		size_t	i = 0;
+
+		while (i < n) {
+				((char *)dst)[i] = ((char *)src)[i];
+				i++;
+		}
+		return (dst);
 }
 
-int				ft_atoi(const char *str) {
-	int			i, sign;
-	long		nbr;
+inline int	ft_strcmp(const char *s1, const char *s2)
+{
+		while (*s1 == *s2) {
+				if (*s1 == '\0')
+						return (0);
+				s1++;
+				s2++;
+		}
+		return (*(unsigned char *)s1 - *(unsigned char *)s2);
+}
 
-	i = 0;
-	sign = 1;
-	nbr = 0;
-	if (!str[i])
+inline int	ft_isspace(char c)
+{
+		if (c == ' ' || c == '\t' || c == '\f' || c == '\r'
+				|| c == '\n'|| c == '\v')
+				return (1);
 		return (0);
-	while (ft_isspace(str[i]))
-		i++;
-	if (str[i] == '-' || str[i] == '+') {
-		if (str[++i] == '-')
-			sign = -1;
-	}
-	while (str[i] <= '0' || str[i] >= '9')
-		i++;
-	while (str[i] >= '0' && str[i] <= '9') {
-		nbr = (nbr * 10) + (str[i++] - '0');
-	}
-	return (nbr * sign);
 }
 
-void			*ft_memset(void *s, int c, size_t n) {
-	while(n) {
-		*(char *)s = (unsigned char)c;
-		s++;
-		n--;
-	}
-	return (s);
+int	ft_atoi(const char *str)
+{
+		int	i, sign;
+		long nbr;
+		
+		i = 0;
+		sign = 1;
+		nbr = 0;
+		if (!str[i])
+				return (0);
+		while (ft_isspace(str[i]))
+				i++;
+		if (str[i] == '-' || str[i] == '+') {
+				if (str[++i] == '-')
+						sign = -1;
+		}
+		while (str[i] <= '0' || str[i] >= '9')
+				i++;
+		while (str[i] >= '0' && str[i] <= '9') {
+				nbr = (nbr * 10) + (str[i++] - '0');
+		}
+		return (nbr * sign);
 }
-/* int				ft_isdigit(int c) { */
-/* 	if (c >= '0' || c <= '9') */
-/* 		return (1); */
-/* 	return (0); */
-/* } */
 
-/* int				str_isdigit(char *s) { */
-/* 	while (*s) { */
-/* 		if (ft_isdigit(*s)) */
-/* 			s++; */
-/* 		else */
-/* 			return (0); */
-/* 	} */
-/* 	return (1); */
-/* } */
+inline void *ft_memset(void *s, int c, size_t n)
+{
+		while (n) {
+				*(char *)s = (unsigned char)c;
+				s++;
+				n--;
+		}
+		return (s);
+}
 
+double ft_sqrt(double x)
+{
+		double sqrt, tmp = 0;
 
+		sqrt = x / 2;
+
+		while (sqrt != tmp) {
+				tmp = sqrt;
+				sqrt = (x / tmp + tmp) / 2;
+		}
+		return (sqrt);
+}
