@@ -6,7 +6,7 @@
 /*   By: zizou </var/mail/zizou>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/08 17:21:32 by zizou             #+#    #+#             */
-/*   Updated: 2021/10/19 02:16:22 by zizou            ###   ########.fr       */
+/*   Updated: 2021/10/25 13:05:02 by zizou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,22 @@ void print_stats(void)
 	
 		packets_loss = ((global_env.packets_out - global_env.packets_in) * 100)
 			/ global_env.packets_out;
-		global_env.rtt_avg /= global_env.packets_in;
-		global_env.mdev /= global_env.packets_in; 
-		global_env.mdev = ft_sqrt(global_env.mdev
-				- global_env.rtt_avg * global_env.rtt_avg);
+		if (global_env.packets_in) {
+				global_env.rtt_avg /= global_env.packets_in;
+				global_env.mdev /= global_env.packets_in; 
+				global_env.mdev = ft_sqrt(global_env.mdev - global_env.rtt_avg * global_env.rtt_avg);
+		}
 
 		gettimeofday(&global_env.tv_end, NULL);
 		printf("\n--- %s ping statistics ---\n", global_env.arg);
+		if (global_env.errors) {
+				printf("%d packets transmitted, %d received, +%d errors, %d%% packet loss, time %.0f ms\n",
+						global_env.packets_out, global_env.packets_in, global_env.errors, packets_loss,
+						gettimeval(global_env.tv_start, global_env.tv_end));
+				ft_unsetenv();
+				close(global_env.socket);
+				exit(EXIT_SUCCESS);
+		}
 		printf("%d packets transmitted, %d received, %d%% packet loss, time %.0f ms\n",
 				global_env.packets_out, global_env.packets_in, packets_loss,
 				gettimeval(global_env.tv_start, global_env.tv_end));

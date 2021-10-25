@@ -6,7 +6,7 @@
 /*   By: aabelque <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/08 15:41:59 by aabelque          #+#    #+#             */
-/*   Updated: 2021/10/19 01:36:38 by zizou            ###   ########.fr       */
+/*   Updated: 2021/10/25 12:35:28 by zizou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ struct	s_env
 		char				host[INET_ADDRSTRLEN];
 		unsigned int		packets_out;
 		unsigned int		packets_in;
+		unsigned int		errors;
 		float				rtt_max;
 		float				rtt_min;
 		float				rtt_avg;
@@ -72,6 +73,7 @@ void			get_reply(struct msghdr msg, int n);
 void			resolve_hostname(void);
 int				send_ping(void);
 int				recv_ping(void);
+void			update_stats(int nbytes, float rtt, struct icmp *icmp);
 
 /* Utils */
 void			ft_setenv(void);

@@ -6,7 +6,7 @@
 /*   By: zizou </var/mail/zizou>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/08 17:11:55 by zizou             #+#    #+#             */
-/*   Updated: 2021/10/19 01:39:47 by zizou            ###   ########.fr       */
+/*   Updated: 2021/10/25 11:01:08 by zizou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void ft_ping(void)
 		while (42) {
 				err = recv_ping();
 				if (err == -1)
-					exit_errors("Recvmsg() failed\n");
+						exit_errors("Recvmsg() failed\n");
 				signal(SIGINT, sig_interrupt);
 				alarm(1);
 		}

@@ -6,7 +6,7 @@
 /*   By: zizou </var/mail/zizou>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/09 10:48:36 by zizou             #+#    #+#             */
-/*   Updated: 2021/10/19 02:14:57 by zizou            ###   ########.fr       */
+/*   Updated: 2021/10/24 18:08:56 by zizou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ inline void *ft_memset(void *s, int c, size_t n)
 
 double ft_sqrt(double x)
 {
-		double sqrt, tmp = 0;
+		double sqrt = 0, tmp = 0;
 
 		sqrt = x / 2;
 

@@ -6,7 +6,7 @@
 /*   By: zizou </var/mail/zizou>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/16 12:05:16 by zizou             #+#    #+#             */
-/*   Updated: 2021/10/19 01:41:32 by zizou            ###   ########.fr       */
+/*   Updated: 2021/10/24 12:49:12 by zizou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,7 @@ void resolve_hostname(void)
 		addr4 = (struct sockaddr_in *)result->ai_addr;
 		global_env.dst = addr4;
 		inet_ntop(AF_INET, &addr4->sin_addr, global_env.host, INET_ADDRSTRLEN);
+		if (!ft_strcmp(global_env.host, "0.0.0.0"))
+			strcpy(global_env.host, "127.0.0.1");
 		freeaddrinfo(result);
 }
