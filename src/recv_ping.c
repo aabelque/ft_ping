@@ -6,7 +6,7 @@
 /*   By: zizou </var/mail/zizou>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 10:57:08 by zizou             #+#    #+#             */
-/*   Updated: 2021/10/25 14:37:32 by zizou            ###   ########.fr       */
+/*   Updated: 2021/11/15 01:37:27 by zizou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,47 +14,98 @@
 
 extern struct s_env global_env;
 
-void update_stats(int nbytes, float rtt, struct icmp *icmp)
+static void print_from(int x, int nbytes, char *hname, char *host)
 {
+		if (x)
+			printf("%ld bytes from %s (%s):", nbytes - sizeof(struct ip), hname, host);
+		else
+			printf("%d bytes from %s:", nbytes, hname);
+}
+
+static void print_output(int x, int seq, int nbytes, long triptime, int ttl)
+{
+		if (global_env.rdns)
+				print_from(x, nbytes, global_env.dns, global_env.host);
+		else
+				print_from(x, nbytes, global_env.arg, global_env.host);
+		printf(" icmp_seq=%d", seq);
+		printf(" ttl=%d", ttl);
+		if (triptime >= 100000)
+			printf(" time=%ld ms\n", triptime / 1000);
+		else if (triptime >= 10000)
+			printf(" time=%ld.%01ld ms\n", triptime / 1000, (triptime % 1000) / 100);
+		else if (triptime >= 1000)
+			printf(" time=%ld.%02ld ms\n", triptime / 1000, (triptime % 1000) / 10);
+		else
+			printf(" time=%ld.%03ld ms\n", triptime / 1000, triptime % 1000);
+}
+
+void update_statistics(long triptime)
+{
+		global_env.packets_in++;
+		global_env.rtt_avg += triptime;
+		if (triptime > global_env.rtt_max)
+				global_env.rtt_max = triptime;
+		if (triptime < global_env.rtt_min)
+				global_env.rtt_min = triptime;
+		else if (global_env.rtt_min == 0)
+				global_env.rtt_min = triptime;
+		if (!global_env.rtt)
+				global_env.rtt = triptime * 8;
+		else
+				global_env.rtt += triptime - global_env.rtt / 8;
+		global_env.mdev += triptime * triptime;
+}
+
+void update_stats(int nbytes, long triptime, struct icmp *icmp, struct ip *ip, int ttl)
+{
+		struct hostent *ht = NULL;
+
 		switch (icmp->icmp_type) {
 		case 0:
 				switch (global_env.opt.v) {
 				case true:
-						printf("%d bytes from %s: type = %d, code = %d\n",
-								nbytes, global_env.arg, icmp->icmp_type, icmp->icmp_code);
+						if (!global_env.opt.q) {
+								printf("%d bytes from %s: type = %d, code = %d\n",
+										nbytes, global_env.arg, icmp->icmp_type,
+										icmp->icmp_code);
+						}
 						break;
 				case false:
-						if (ft_strcmp(global_env.arg, global_env.host))
-								printf("%d bytes from %s (%s): icmp_seq=%d ttl=%d time=%.2f ms\n",
-										nbytes, global_env.arg, global_env.host, icmp->icmp_seq,
-										global_env.ttl, rtt);
-						else
-								printf("%d bytes from %s: icmp_seq=%d ttl=%d time=%.2f ms\n",
-										nbytes, global_env.host, icmp->icmp_seq,
-										global_env.ttl, rtt);
+						if (!global_env.opt.q) {
+								if (ft_strcmp(global_env.arg, global_env.host))
+										print_output(1, icmp->icmp_seq, nbytes, triptime, ttl);
+								else
+										print_output(0, icmp->icmp_seq, nbytes, triptime, ttl);
+						}
 						break;
 				}
-				global_env.packets_in++;
-				global_env.rtt_avg += rtt;
-				if (rtt > global_env.rtt_max)
-						global_env.rtt_max = rtt;
-				if (rtt < global_env.rtt_min)
-						global_env.rtt_min = rtt;
-				else if (global_env.rtt_min == 0)
-						global_env.rtt_min = rtt;
-				global_env.mdev += rtt * rtt;
+				update_statistics(triptime);
 				break;
 		case 11:
-				printf("From %s (%s): icmp_seq=%d Time to live exceeded\n",
-						global_env.arg, global_env.host, icmp->icmp_seq);
+				if (!global_env.opt.q) {
+						if (global_env.ttl > 8) {
+								printf("From %s (%s): icmp_seq=%d Time to live exceeded\n",
+										global_env.arg, global_env.host, icmp->icmp_seq);
+						} else {
+								ht = gethostbyaddr(&ip->ip_src, 4, AF_INET);
+								if (ht)
+										printf("From %s (%s): icmp_seq=%d Time to live exceeded\n",
+												ht->h_name, inet_ntoa(ip->ip_src), icmp->icmp_seq);
+								else
+										printf("From %s (%s): icmp_seq=%d Time to live exceeded\n",
+												inet_ntoa(ip->ip_src), inet_ntoa(ip->ip_src), icmp->icmp_seq);
+						}
+				}
 				global_env.errors++;
 				break;
 		}
 }
 
-void get_reply(struct msghdr msg, int n)
+void get_reply(struct msghdr msg, int nbytes)
 {
-		float rtt = 0.0;
+		int ttl = 0;
+		long triptime = 0;
 		char *buff;
 		struct ip *ip;
 		struct icmp	*icmp;
@@ -63,17 +114,20 @@ void get_reply(struct msghdr msg, int n)
 		ip = (struct ip *)buff;
 		icmp = (struct icmp *)(buff + (ip->ip_hl * 4));
 
-		rtt = gettimeval(global_env.tv_tick, global_env.tv_end);
+		ttl = ip->ip_ttl;
+		tv_sub(&global_env.tv_end, &global_env.tv_tick);
+		triptime = global_env.tv_end.tv_sec * 1000000 + global_env.tv_end.tv_usec;
 		if (icmp->icmp_type != 8) {
-				if (n > 0)
-						update_stats(n, rtt, icmp);
+				if (nbytes > 0)
+						update_stats(nbytes, triptime, icmp, ip, ttl);
 				else if (global_env.opt.v)
+						if (errno != EWOULDBLOCK)
 						printf("%ld bytes from %s: type = %d, code = %d\n", PING_SIZE, global_env.arg,
 								icmp->icmp_type, icmp->icmp_code);
 		}
 }
 
-struct msghdr fill_msghdr(struct iovec *iov)
+static struct msghdr fill_msghdr(struct iovec *iov)
 {
 		struct msghdr hdr;
 
@@ -89,7 +143,7 @@ struct msghdr fill_msghdr(struct iovec *iov)
 
 int	recv_ping(void)
 {
-		int	n = 0;
+		int	nbytes = 0;
 		char iov_base[PING_SIZE];
 		struct iovec iov;
 		struct msghdr msg;
@@ -103,10 +157,10 @@ int	recv_ping(void)
 	
 		msg = fill_msghdr(&iov);
 
-		if ((n = recvmsg(global_env.socket, &msg, 0)) < 0)
-				if (errno != EAGAIN)
-					return (n);
+		if ((nbytes = recvmsg(global_env.socket, &msg, 0)) < 0)
+				if (errno != EAGAIN && errno != EINTR)
+					return (nbytes);
 		gettimeofday(&global_env.tv_end, NULL);
-		get_reply(msg, n);
+		get_reply(msg, nbytes);
 		return (0);
 }

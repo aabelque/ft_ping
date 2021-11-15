@@ -6,7 +6,7 @@
 /*   By: zizou </var/mail/zizou>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 10:56:09 by zizou             #+#    #+#             */
-/*   Updated: 2021/10/24 18:37:14 by zizou            ###   ########.fr       */
+/*   Updated: 2021/11/12 13:39:42 by zizou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 extern struct s_env global_env;
 
-struct icmp	*fill_icmphdr(struct icmp *icmp)
+static struct icmp	*fill_icmphdr(struct icmp *icmp)
 {
-		struct icmp *hdr;
+		struct icmp *hdr = NULL;
 
 		hdr = icmp;
 		hdr->icmp_type = ICMP_ECHO;
@@ -28,9 +28,9 @@ struct icmp	*fill_icmphdr(struct icmp *icmp)
 		return (hdr);
 }
 
-struct ip *fill_iphdr(struct ip *ip)
+static struct ip *fill_iphdr(struct ip *ip)
 {
-		struct ip *hdr;
+		struct ip *hdr = NULL;
 	
 		hdr = ip;
 		if (is_little_endian()) {
@@ -48,10 +48,10 @@ struct ip *fill_iphdr(struct ip *ip)
 
 int	send_ping(void)
 {
-		int	err;
+		int	err = 0;
 		char ping[PING_SIZE];
-		struct ip *ip;
-		struct icmp	*icmp;
+		struct ip *ip = NULL;
+		struct icmp	*icmp = NULL;
 
 		ft_memset(ping, 0, sizeof(ping));
 		ft_memset(&ip, 0, sizeof(ip));
@@ -62,7 +62,7 @@ int	send_ping(void)
 
 		gettimeofday(&global_env.tv_tick, NULL);
 		err = sendto(global_env.socket, ping, sizeof(ping), 0,
-				(struct sockaddr *)global_env.dst, sizeof(*global_env.dst));
+				(struct sockaddr *)global_env.ipv4, sizeof(*global_env.ipv4));
 		if (err == -1)
 				return(err);
 		global_env.seq++;
