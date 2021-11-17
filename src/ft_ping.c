@@ -6,7 +6,7 @@
 /*   By: zizou </var/mail/zizou>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/08 17:11:55 by zizou             #+#    #+#             */
-/*   Updated: 2021/11/13 17:48:48 by zizou            ###   ########.fr       */
+/*   Updated: 2021/11/17 01:04:09 by zizou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void ft_ping(void)
 int main(int ac, char **av)
 {
 		ft_setenv();
-		ft_parse_args(ac, av + 1);
+		ft_parse_args(ac, av);
 		handle_errors(ac);
 		ft_ping();
 		return (0);

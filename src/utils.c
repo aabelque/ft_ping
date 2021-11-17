@@ -6,7 +6,7 @@
 /*   By: zizou </var/mail/zizou>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/08 17:21:32 by zizou             #+#    #+#             */
-/*   Updated: 2021/11/14 23:41:59 by zizou            ###   ########.fr       */
+/*   Updated: 2021/11/17 02:33:12 by zizou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,17 +80,9 @@ void exit_errors(char *s)
 
 void handle_errors(int ac)
 {
-		if (global_env.dash > 1) {
-				if (global_env.opt.h || global_env.arg == NULL) {
-						fprintf(stderr, "%s\n%49s\n", USAGE, USAGE_OPT);
-						exit_errors("");
-				}
-		} else {
-				if (((ac < 2 || ac > 3) && !global_env.ttl)|| global_env.opt.h || (global_env.opt.v && ac != 3)
-							|| global_env.arg == NULL || (!global_env.dash && ac != 2)) {
-						fprintf(stderr, "%s\n%49s\n", USAGE, USAGE_OPT);
-						exit_errors("");
-				}
+		if (global_env.opt.h || global_env.arg == NULL) {
+				fprintf(stderr, "%s\n", USAGE);
+				exit_errors("");
 		}
 		if (getuid() != 0)
 				exit_errors("Operation not permitted. See man sudo\n");

@@ -6,7 +6,7 @@
 /*   By: aabelque <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/08 15:41:59 by aabelque          #+#    #+#             */
-/*   Updated: 2021/11/15 01:14:24 by zizou            ###   ########.fr       */
+/*   Updated: 2021/11/17 02:44:27 by zizou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,7 @@
 #include <arpa/nameser.h>
 #include <signal.h>
 
-#define USAGE "Usage: ft_ping [-hqv] [-h help]"
-#define USAGE_OPT "[-q quit] [-v verbose] destination"
+#define USAGE "Usage: ft_ping [-Dhqv] [-t ttl] destination"
 
 #define NI_MAXHOST 1025
 #define NI_MAXSERV 32
@@ -50,6 +49,7 @@ struct	s_opt
 		bool	v;
 		bool	q;
 		bool	ttl;
+		bool	timestamp;
 };
 
 struct	s_env
@@ -112,9 +112,12 @@ long			gettimeval(struct timeval before, struct timeval after);
 void			*ft_memset(void *s, int c, size_t n);
 void			*ft_memcpy(void *dst, const void *src, size_t n);
 int				ft_strcmp(const char *s1, const char *s2);
+char			*ft_strcpy(char *dest, const char *src);
 int				ft_isspace(char c);
 int				ft_atoi(const char *str);
-size_t			ft_strlen(char *s);
+size_t			ft_strlen(const char *s);
 double			ft_sqrt(double x);
+int				strisdigit(const char *s);
+int				ft_isdigit(int c);
 
 #endif

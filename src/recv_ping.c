@@ -6,7 +6,7 @@
 /*   By: zizou </var/mail/zizou>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 10:57:08 by zizou             #+#    #+#             */
-/*   Updated: 2021/11/15 01:37:27 by zizou            ###   ########.fr       */
+/*   Updated: 2021/11/17 02:51:58 by zizou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,19 @@ extern struct s_env global_env;
 
 static void print_from(int x, int nbytes, char *hname, char *host)
 {
-		if (x)
-			printf("%ld bytes from %s (%s):", nbytes - sizeof(struct ip), hname, host);
-		else
-			printf("%d bytes from %s:", nbytes, hname);
+		if (global_env.opt.timestamp) {
+			struct timeval tv;
+			gettimeofday(&tv, NULL);
+			printf("[%lu.%06lu] ", (unsigned long)tv.tv_sec, (unsigned long)tv.tv_usec);
+		}
+		if (x) {
+				printf("%ld bytes from %s (%s):", nbytes - sizeof(struct ip), hname, host);
+		} else {
+				if (!ft_strcmp(host, "127.0.0.1"))
+						printf("%d bytes from %s:", nbytes, host);
+				else
+						printf("%d bytes from %s:", nbytes, hname);
+		}
 }
 
 static void print_output(int x, int seq, int nbytes, long triptime, int ttl)
@@ -73,7 +82,8 @@ void update_stats(int nbytes, long triptime, struct icmp *icmp, struct ip *ip, i
 						break;
 				case false:
 						if (!global_env.opt.q) {
-								if (ft_strcmp(global_env.arg, global_env.host))
+								if (ft_strcmp(global_env.arg, global_env.host)
+										&& ft_strcmp(global_env.host, "127.0.0.1"))
 										print_output(1, icmp->icmp_seq, nbytes, triptime, ttl);
 								else
 										print_output(0, icmp->icmp_seq, nbytes, triptime, ttl);

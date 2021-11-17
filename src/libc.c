@@ -6,15 +6,32 @@
 /*   By: zizou </var/mail/zizou>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/09 10:48:36 by zizou             #+#    #+#             */
-/*   Updated: 2021/11/15 00:08:36 by zizou            ###   ########.fr       */
+/*   Updated: 2021/11/17 02:42:35 by zizou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ping.h"
 
-inline size_t ft_strlen(char *s)
+inline int strisdigit(const char *s)
 {
-		char *i = s;
+		if (!s || !ft_strlen(s))
+				return (0);
+		while (*s != '\0')
+				if (!ft_isdigit(*s++))
+						return (0);
+		return (1);
+}
+
+inline int ft_isdigit(int c)
+{
+		if (c >= '0' && c <= '9')
+				return (1);
+		return (0);
+}
+
+inline size_t ft_strlen(const char *s)
+{
+		const char *i = s;
 
 		while (*s)
 				s++;
@@ -41,6 +58,15 @@ inline int	ft_strcmp(const char *s1, const char *s2)
 				s2++;
 		}
 		return (*(unsigned char *)s1 - *(unsigned char *)s2);
+}
+
+inline char	*ft_strcpy(char *dest, const char *src)
+{
+		char *tmp = dest;
+
+		while ((*dest++ = *src++) != 0)
+				;
+		return tmp;
 }
 
 inline int	ft_isspace(char c)
