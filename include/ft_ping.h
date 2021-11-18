@@ -6,7 +6,7 @@
 /*   By: aabelque <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/08 15:41:59 by aabelque          #+#    #+#             */
-/*   Updated: 2021/11/17 02:44:27 by zizou            ###   ########.fr       */
+/*   Updated: 2021/11/18 16:26:02 by zizou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void			get_reply(struct msghdr msg, int n);
 int				init_socket(void);
 int				send_ping(void);
 int				recv_ping(void);
-int				ip_version(char *s);
+/* int				ip_version(char *s); */
 
 /* Utils */
 void			ft_setenv(void);
@@ -106,7 +106,7 @@ void			print_ewma_stats(void);
 void			tv_sub(struct timeval *out, struct timeval *in);
 unsigned short	checksum(void *addr, int len);
 int				is_little_endian(void);
-long			gettimeval(struct timeval before, struct timeval after);
+/* long			gettimeval(struct timeval before, struct timeval after); */
 
 /* Libc */
 void			*ft_memset(void *s, int c, size_t n);

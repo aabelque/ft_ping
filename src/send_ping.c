@@ -6,7 +6,7 @@
 /*   By: zizou </var/mail/zizou>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 10:56:09 by zizou             #+#    #+#             */
-/*   Updated: 2021/11/12 13:39:42 by zizou            ###   ########.fr       */
+/*   Updated: 2021/11/18 16:33:36 by zizou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	send_ping(void)
 		err = sendto(global_env.socket, ping, sizeof(ping), 0,
 				(struct sockaddr *)global_env.ipv4, sizeof(*global_env.ipv4));
 		if (err == -1)
-				return(err);
+				return (err);
 		global_env.seq++;
 		global_env.packets_out++;
 		return (0);

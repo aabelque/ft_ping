@@ -6,7 +6,7 @@
 /*   By: zizou </var/mail/zizou>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/08 17:21:32 by zizou             #+#    #+#             */
-/*   Updated: 2021/11/17 02:33:12 by zizou            ###   ########.fr       */
+/*   Updated: 2021/11/18 16:23:58 by zizou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,11 +112,11 @@ inline int	is_little_endian(void)
 		return (*(char *)&x);
 }
 
-inline long gettimeval(struct timeval before, struct timeval after)
-{
-		return (((after.tv_sec - before.tv_sec) * 1000.0)
-				+ (after.tv_usec - before.tv_usec) / 1000.0);
-}
+/* inline long gettimeval(struct timeval before, struct timeval after) */
+/* { */
+/* 		return (((after.tv_sec - before.tv_sec) * 1000.0) */
+/* 				+ (after.tv_usec - before.tv_usec) / 1000.0); */
+/* } */
 
 inline void tv_sub(struct timeval *out, struct timeval *in)
 {

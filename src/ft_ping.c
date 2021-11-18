@@ -6,7 +6,7 @@
 /*   By: zizou </var/mail/zizou>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/08 17:11:55 by zizou             #+#    #+#             */
-/*   Updated: 2021/11/17 01:04:09 by zizou            ###   ########.fr       */
+/*   Updated: 2021/11/18 17:09:39 by zizou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 struct s_env global_env;
 
-//TODO 
-// ttl = 1 from 'routeur' (ip routeur)
 void ft_ping(void)
 {
 		int		err = 0;
@@ -37,7 +35,6 @@ void ft_ping(void)
 				signal(SIGQUIT, sig_quit);
 				alarm(1);
 		}
-		free(global_env.arg);
 		close(global_env.socket);
 }
 

@@ -6,7 +6,7 @@
 /*   By: zizou </var/mail/zizou>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/16 12:06:56 by zizou             #+#    #+#             */
-/*   Updated: 2021/11/17 01:44:21 by zizou            ###   ########.fr       */
+/*   Updated: 2021/11/18 16:16:03 by zizou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,8 @@ void ft_unsetenv(void)
 		global_env.ttl = 0;
 		global_env.seq = 0;
 		global_env.ipv4 = NULL;
-		/* free(global_env.arg); */
-		freeaddrinfo(global_env.res);
 		global_env.arg = NULL;
+		freeaddrinfo(global_env.res);
 		global_env.res = NULL;
 }
 
@@ -85,7 +84,7 @@ int init_socket(void)
 
 inline void sig_quit(__attribute__((unused))int sig)
 {
-	print_ewma_stats();
+		print_ewma_stats();
 }
 
 inline void	sig_interrupt(__attribute__((unused))int sig)
